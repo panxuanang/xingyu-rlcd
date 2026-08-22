@@ -1,0 +1,53 @@
+name: Build Xingyu RLCD BIN
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build Waveshare S3 RLCD 4.2
+    runs-on: ubuntu-latest
+    container:
+      image: espressif/idf:v5.5.2
+
+    steps:
+      - name: Checkout this build package
+        uses: actions/checkout@v4
+
+      - name: Download full Xiaozhi firmware source
+        shell: bash
+        run: |
+          git clone --depth 1 https://github.com/ZhouhaoJiang/xiaozhi-esp32.git firmware
+
+      - name: Apply Xingyu interface and RLCD fixes
+        shell: bash
+        run: |
+          cp overlay/main/boards/waveshare-s3-rlcd-4.2/weather_ui.cc \
+             firmware/main/boards/waveshare-s3-rlcd-4.2/weather_ui.cc
+          mkdir -p firmware/main/boards/waveshare-s3-rlcd-4.2/assets/icons
+          cp overlay/main/boards/waveshare-s3-rlcd-4.2/assets/icons/ui_img_xingyu_girl.c \
+             firmware/main/boards/waveshare-s3-rlcd-4.2/assets/icons/ui_img_xingyu_girl.c
+          python scripts/apply_mods.py firmware
+
+      - name: Build only Waveshare S3 RLCD 4.2
+        shell: bash
+        working-directory: firmware
+        run: |
+          source $IDF_PATH/export.sh
+          python scripts/release.py waveshare-s3-rlcd-4.2 --name waveshare-s3-rlcd-4.2
+
+      - name: Prepare flash BIN
+        shell: bash
+        run: |
+          mkdir -p output
+          cp firmware/build/merged-binary.bin output/Xingyu_RLCD_4.2_merged.bin
+
+      - name: Upload BIN
+        uses: actions/upload-artifact@v4
+        with:
+          name: Xingyu_RLCD_4.2_BIN
+          path: output/Xingyu_RLCD_4.2_merged.bin
+          if-no-files-found: error
