@@ -1,0 +1,14 @@
+.github/workflows/build_xingyu_rlcd.yml
+    GitHub 的“一键编译按钮”。
+
+overlay/main/boards/waveshare-s3-rlcd-4.2/weather_ui.cc
+    星语伴侣 400x300 首页。
+
+overlay/main/boards/waveshare-s3-rlcd-4.2/assets/icons/ui_img_xingyu_girl.c
+    动漫人物 LVGL 图片资源。
+
+scripts/apply_mods.py
+    自动修改上游完整源码：修复长文本滚动、调整对话位置、精简天气文字。
+
+preview/xingyu_rlcd_400x300_preview.png
+    界面预览。
