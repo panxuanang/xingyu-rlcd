@@ -30,7 +30,12 @@ jobs:
           mkdir -p firmware/main/boards/waveshare-s3-rlcd-4.2/assets/icons
           cp overlay/main/boards/waveshare-s3-rlcd-4.2/assets/icons/ui_img_xingyu_girl.c \
              firmware/main/boards/waveshare-s3-rlcd-4.2/assets/icons/ui_img_xingyu_girl.c
+
+          cp firmware/main/boards/waveshare-s3-rlcd-4.2/secret_config.h.example \
+             firmware/main/boards/waveshare-s3-rlcd-4.2/secret_config.h
+
           python scripts/apply_mods.py firmware
+
 
       - name: Build only Waveshare S3 RLCD 4.2
         shell: bash
