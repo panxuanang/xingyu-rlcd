@@ -208,14 +208,14 @@ void CustomLcdDisplay::SetChatMessage(const char* role, const char* content) {
             // Original was about 50 ms/pixel with a 1500 ms delay.
             // V7 is 70 ms/pixel with a 1500 ms delay, and scrolls only once.
             const int distance = label_h - visible_h;
-            int duration = distance * 70;
-            if (duration < 1500) duration = 1500;
+            int duration = distance * 120;
+            if (duration < 1500) duration = 2000;
 
             lv_anim_t a;
             lv_anim_init(&a);
             lv_anim_set_var(&a, chat_status_label_);
             lv_anim_set_values(&a, 0, -distance);
-            lv_anim_set_delay(&a, 1500);
+            lv_anim_set_delay(&a, 2000);
             lv_anim_set_duration(&a, duration);
             lv_anim_set_exec_cb(&a, [](void *obj, int32_t v) {
                 lv_obj_set_y((lv_obj_t *)obj, v);
@@ -223,7 +223,7 @@ void CustomLcdDisplay::SetChatMessage(const char* role, const char* content) {
             lv_anim_start(&a);
 
             ESP_LOGI(TAG,
-                     "Xingyu V7 long answer: %dpx > %dpx, delay 1500ms, scroll once in %dms",
+                     "Xingyu V7 long answer: %dpx > %dpx, delay 2000ms, scroll once in %dms",
                      label_h, visible_h, duration);
         }
     }
